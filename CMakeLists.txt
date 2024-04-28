@@ -134,6 +134,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/topic_subscriber_pkg_node.cpp)
 add_executable(simple_topic_subscriber src/simple_topic_subscriber.cpp)
+add_executable(robot_odometry src/robot_odometry.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -145,12 +146,16 @@ add_executable(simple_topic_subscriber src/simple_topic_subscriber.cpp)
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(simple_topic_subscriber ${simple_topic_subscriber_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(robot_odometry ${robot_odometry_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(simple_topic_subscriber
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(robot_odometry
   ${catkin_LIBRARIES}
 )
 
