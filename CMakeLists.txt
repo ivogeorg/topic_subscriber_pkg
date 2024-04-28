@@ -10,6 +10,8 @@ project(topic_subscriber_pkg)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  nav_msgs
+  message_generation  # for custom msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -46,11 +48,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  Age.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -67,10 +68,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -104,7 +105,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES topic_subscriber_pkg
-#  CATKIN_DEPENDS roscpp std_msgs
+ CATKIN_DEPENDS roscpp std_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -135,6 +136,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/topic_subscriber_pkg_node.cpp)
 add_executable(simple_topic_subscriber src/simple_topic_subscriber.cpp)
 add_executable(robot_odometry src/robot_odometry.cpp)
+add_executable(publish_age src/publish_age.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -147,6 +149,7 @@ add_executable(robot_odometry src/robot_odometry.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(simple_topic_subscriber ${simple_topic_subscriber_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(robot_odometry ${robot_odometry_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(publish_age ${publish_age_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -158,6 +161,10 @@ target_link_libraries(simple_topic_subscriber
 target_link_libraries(robot_odometry
   ${catkin_LIBRARIES}
 )
+target_link_libraries(publish_age
+  ${catkin_LIBRARIES}
+)
+add_dependencies(publish_age topic_subscriber_pkg_generate_messages_cpp)
 
 #############
 ## Install ##
